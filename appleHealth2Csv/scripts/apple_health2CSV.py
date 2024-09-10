@@ -2,11 +2,12 @@ import xml.etree.ElementTree as ET
 import csv
 import os
 
+
 # Ordnerpfad für die XML- und CSV-Dateien
-data_folder = 'data'
+data_folder = os.path.abspath('./data')
 
 # Pfad zur XML-Datei und zur Ausgabe-CSV-Datei
-xml_file = os.path.join(data_folder, 'Export.xml')
+xml_file = os.path.join(data_folder,'Export.xml')
 csv_file = os.path.join(data_folder, 'health_data.csv')
 
 print("--- Start xml parsen ---")
@@ -34,10 +35,7 @@ for record in records:
 # Die gesammelten Attribute in eine Liste umwandeln und sortieren (optional)
 all_attributes = sorted(list(all_attributes))
 
-# Fortschrittsanzeige
-print(f"Gesammelte Attribute: {all_attributes}")
-
-input("Drücke die Eingabetaste, um fortzufahren...")
+#input("Drücke die Eingabetaste, um fortzufahren...")
 
 # Erstelle die CSV-Datei und schreibe die Kopfzeilen (alle gefundenen Attribute)
 with open(csv_file, mode='w', newline='', encoding='utf-8') as file:

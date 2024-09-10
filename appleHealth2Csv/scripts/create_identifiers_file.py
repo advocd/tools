@@ -1,8 +1,12 @@
 import csv
 import sys
+import os
 
-# Pfad zur CSV-Datei
-csv_file = 'data/health_data.csv'
+data_folder = os.path.abspath('./data')
+
+# Pfad zur CSV-Datei und zur Ausgabe-Textdatei
+csv_file = os.path.join(data_folder, 'health_data.csv')
+output_file = os.path.join(data_folder, 'identifiers.txt')
 
 # Set zum Speichern der eindeutigen Wörter, die mit 'HKQuantityTypeIdentifier' beginnen
 hk_identifiers = set()
@@ -27,14 +31,16 @@ with open(csv_file, mode='r', newline='', encoding='utf-8') as file:
         # Durch jede Zelle in der Zeile gehen
         for cell in row:
             if isinstance(cell, str) and cell.startswith("HKQuantityTypeIdentifier"):
-                # Entferne den 'HKQuantityTypeIdentifier' Präfix und speichere den Rest
-                cleaned_identifier = cell.replace("HKQuantityTypeIdentifier", "")
-                hk_identifiers.add(cleaned_identifier)
+                # Speichere den vollständigen Identifier
+                hk_identifiers.add(cell)
         
         # Fortschrittsanzeige nur alle 100 Zeilen oder bei der letzten Zeile aktualisieren
         print_progress(i, total_lines)
 
-# Eindeutige und bereinigte Wörter ausgeben
-print("\n\nFolgende bereinigte Bezeichner wurden gefunden:")
-for identifier in sorted(hk_identifiers):
-    print(identifier)
+# Identifiers in eine Textdatei schreiben
+with open(output_file, mode='w', encoding='utf-8') as f:
+    for identifier in sorted(hk_identifiers):
+        f.write(f"{identifier}\n")
+
+# print(f"\n\nDie Identifikatoren wurden erfolgreich in {output_file} gespeichert!")
+input(f"\n\nDie Textdatei mit den Identifikatoren wurden erfolgreich gespeichert in: \n    {output_file} \n\nWenn die Bearbeitung abgschlossen ist bitte hier mit Enter bestaetigen: \n" )
